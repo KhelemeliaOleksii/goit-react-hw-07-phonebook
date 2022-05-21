@@ -1,0 +1,13 @@
+.Filter {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+}
+
+.Filter label {
+    margin-bottom: 10px;
+}
+
+.Filter input {
+    width: 50%;
+}
