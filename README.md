@@ -1,5 +1,14 @@
 **Read in other languages: [Русский](README.md), [Polska](README.pl.md).**
 
+# Git commands. Start a project
+1. Create folder:  cd mkdir homework
+2. Clone the repository: git clone https://...reponame.git
+3. Go to the repo's directory: cd reponame
+4. Init github: git init
+5. Change origin github url: git remote set-url origin https://...reponame.git
+6. Check remote origin url: git remote -v
+
+
 # React homework template
 
 Этот проект был создан при помощи
