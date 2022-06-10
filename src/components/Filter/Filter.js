@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styles from './Filter.module.css'
+import { filterReducer } from 'redux/filter/filter-reducer'
+import filterContacts from 'redux/filter/filter-actions'
 
 const Filter = ({ filterValue, filterHandler }) => {
 
@@ -26,4 +29,14 @@ Filter.propTypes = {
     filterHandler: PropTypes.func.isRequired,
 }
 
-export default Filter
+const mapStateToProps = (state) => ({
+    filterValue: state.contacts.filter,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    filterHandler: (e) => {
+        return dispatch(filterContacts(e.target.value))
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
