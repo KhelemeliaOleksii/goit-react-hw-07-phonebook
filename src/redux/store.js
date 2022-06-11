@@ -20,7 +20,6 @@ const store = configureStore({
             },
         }).concat(logger);
         return ignoreActionsReduxToolKit;
-
     },
     devTools: process.env.NODE_ENV !== 'production',
 })
