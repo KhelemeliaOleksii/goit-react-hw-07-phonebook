@@ -1,12 +1,6 @@
-import filterTypes from "./filter-types";
+import { createReducer } from "@reduxjs/toolkit";
+import filterActions from "./filter-actions";
 
-export const filterReducer = (state = '', { type, payload }) => {
-    console.log("filter reducer test", payload);
-    switch (type) {
-        case filterTypes.CHANGE_FILTER:
-            console.log("filter reducer test", payload);
-            return payload;
-        default:
-            return state;
-    }
-}
+export const filterReducer = createReducer('', {
+    [filterActions.filterContacts.toString()]: (_, { payload }) => payload,
+})

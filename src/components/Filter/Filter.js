@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styles from './Filter.module.css'
-import { filterReducer } from 'redux/filter/filter-reducer'
-import filterContacts from 'redux/filter/filter-actions'
+import filterActions from 'redux/filter/filter-actions'
 
 const Filter = ({ filterValue, filterHandler }) => {
 
@@ -35,7 +34,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     filterHandler: (e) => {
-        return dispatch(filterContacts(e.target.value))
+        return dispatch(filterActions.filterContacts(e.target.value))
     }
 })
 
