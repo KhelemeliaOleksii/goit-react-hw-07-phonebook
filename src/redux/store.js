@@ -13,12 +13,16 @@ import {
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: {
-            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
-    }).concat(logger),
-    devTools: process.env.NODE_ENV === 'production',
+    middleware: (getDefaultMiddleware) => {
+        const ignoreActionsReduxToolKit = getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }).concat(logger);
+        return ignoreActionsReduxToolKit;
+
+    },
+    devTools: process.env.NODE_ENV !== 'production',
 })
 
 export const persistedStore = {
