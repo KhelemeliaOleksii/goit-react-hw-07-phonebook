@@ -6,8 +6,15 @@
 3. Go to the repo's directory: cd reponame
 4. Init github: git init
 5. Change origin github url: git remote set-url origin https://...reponame.git
-6. Check remote origin url: git remote -v
+6. Check remote origin url: git remote -v 
+7. Set contributor:  git config --global user.name "KhelemeliaOleksii"
+                     git config --global user.email "xvdm@ukr.net"
+8. Set credentials:  git config --global credentials.username "KhelemeliaOleksii"
 
+9. Change gh-pages branch url in package.json
+
+<!-- 10. Push changes to git-hub repository: git push -u origin main -->
+ 
 
 # React homework template
 

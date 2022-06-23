@@ -1,19 +1,27 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types'
-
+import { useAddContactsMutation, useGetContactsQuery } from 'redux/contacts/contactsApi';
 import styles from './ContactForm.module.css'
-import { connect } from 'react-redux';
-import contactsActions from 'redux/contacts/contacts-actions';
+import notify from 'services/notify';
+import Loader from '../Loader';
 
 const INITIAL_STATE = {
     name: '',
     phoneNumber: '',
 }
 
-const ContactForm = ({ onSubmitForm }) => {
-
+const ContactForm = () => {
+    //locale state
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    //add contact hook
+    const [addConact, { isLoading }] = useAddContactsMutation();
+
+    // button submit is disabled (no name OR no phonenumber OR data is loading )
+    const isButtonSubmitDisabled = !name || !phoneNumber || isLoading;
+
+    // current contact list 
+    const { data: contactList } = useGetContactsQuery();
 
     const onChangeInput = ({ target }) => {
         const { name, value } = target;
@@ -26,15 +34,25 @@ const ContactForm = ({ onSubmitForm }) => {
             return;
         }
     }
+
     const onSubmit = (event) => {
         event.preventDefault();
-        onSubmitForm({ name: name, number: phoneNumber });
-        reset();
+        if (isContactWithNameExist(name, contactList)) {
+            notify.warning("Contact exists");
+            reset();
+            return;
+        }
+        addConact({ name, number: phoneNumber })
+            .then(() => notify.success("Contact is added"))
+            .catch((error) => notify.error("Something wrong!", error))
+            .finally(reset());
     }
-    const reset = () => {
+
+    function reset() {
         setName(INITIAL_STATE.name);
         setPhoneNumber(INITIAL_STATE.phoneNumber);
     }
+
     return (
         <form className={styles.ContactForm} onSubmit={onSubmit}>
             <label htmlFor="inputNameId">Name</label>
@@ -47,6 +65,7 @@ const ContactForm = ({ onSubmitForm }) => {
                 id="inputNameId"
                 value={name}
                 required
+                autoComplete={"false"}
             />
             <label htmlFor="inputPhoneId">Phone</label>
             <input
@@ -59,17 +78,20 @@ const ContactForm = ({ onSubmitForm }) => {
                 value={phoneNumber}
                 required
             />
-            <button type="submit"><span>Add contact</span></button>
+            <button type="submit" disabled={isButtonSubmitDisabled}
+            >   {isLoading ? <Loader />
+                : <span>Add contact</span>
+                }
+            </button>
         </form>
+
     )
 };
 
-ContactForm.propTypes = {
-    onSubmitForm: PropTypes.func.isRequired,
+export default ContactForm;
+
+function isContactWithNameExist(contactName, contactList) {
+    const result = contactList.find(({ name }) =>
+        contactName.toLowerCase() === name.toLowerCase());
+    return !!result;
 }
-
-const mapDispatchToProps = (dispatch) => ({
-    onSubmitForm: (data) => dispatch(contactsActions.addContact(data)),
-});
-
-export default connect(null, mapDispatchToProps)(ContactForm);

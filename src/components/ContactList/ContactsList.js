@@ -1,23 +1,34 @@
-import { useDispatch, useSelector } from 'react-redux';
 import ContactItem from "components/ContactItem";
 import styles from './ContactsList.module.css'
-import contactsActions from 'redux/contacts/contacts-actions';
-import selectorConfigureContactsToShow from "redux/contacts/contacts-selectors";
+import { useGetContactsByNameQuery } from 'redux/contacts/contactsApi';
+import Loader from '../Loader';
+import { useSelector } from "react-redux";
+import filterSelector from "redux/filter/filter-selectors";
 
 const ContactsList = () => {
+    const filter = useSelector(filterSelector);
+    const { data: contactsFiltered, isFetching, isError } = useGetContactsByNameQuery(filter);
 
-    const contacts = useSelector(selectorConfigureContactsToShow);
+    const isShowContacts = contactsFiltered && !isError && !isFetching;
 
-    const dispatch = useDispatch();
-    const onClickDelete = (contactId) => dispatch(contactsActions.deleteContact(contactId));
+    const isContactPresent = contactsFiltered && contactsFiltered.length > 0;
 
     return (
-        <ul className={styles.List}>
-            {contacts.map((item) =>
-                <ContactItem key={item.id}
-                    contact={item} onClickDelete={onClickDelete} />
-            )}
-        </ul>
+        <>
+            {isFetching && <Loader />}
+
+            {isShowContacts &&
+                (isContactPresent ?
+                    <ul className={styles.List}>
+                        {contactsFiltered.map((item) =>
+                            <ContactItem key={item.id} contact={item} />
+                        )}
+                    </ul>
+                    :
+                    <p>No Contact</p>
+                )
+            }
+        </>
     )
 };
 

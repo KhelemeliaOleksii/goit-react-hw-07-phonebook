@@ -1,2 +1,3 @@
-const filterSelector = ({ contacts }) => contacts.filter;
+const filterSelector = ({ filter }) => filter;
+
 export default filterSelector;

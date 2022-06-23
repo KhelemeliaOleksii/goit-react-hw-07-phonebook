@@ -1,6 +1,8 @@
 import ContactForm from './ContactForm'
 import ContactsList from './ContactList'
 import Filter from './Filter'
+import NotifyContainer from './NotifyContainer';
+
 
 export const App = () => {
   return (
@@ -10,6 +12,7 @@ export const App = () => {
       <h2>Contacts</h2>
       <Filter />
       <ContactsList />
+      <NotifyContainer />
     </>
   );
 };

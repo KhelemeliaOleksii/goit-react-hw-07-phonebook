@@ -2,7 +2,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { rootReducer } from './root-reducer'
 import {
-    persistStore,
     FLUSH,
     REHYDRATE,
     PAUSE,
@@ -10,8 +9,10 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist'
+import { contactsApi } from 'redux/contacts/contactsApi'
 
-const store = configureStore({
+
+export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => {
         const ignoreActionsReduxToolKit = getDefaultMiddleware({
@@ -19,13 +20,7 @@ const store = configureStore({
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
         })
-        //.concat(logger);
-        return ignoreActionsReduxToolKit;
+        return [...ignoreActionsReduxToolKit, contactsApi.middleware]
     },
     devTools: process.env.NODE_ENV !== 'production',
 })
-
-export const persistedStore = {
-    store,
-    persistor: persistStore(store),
-}

@@ -1,22 +1,21 @@
-import swal from 'sweetalert';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const warning = (msg) => {
-    swal({
-        text: msg,
-        icon: "warning"
-    });
+    toast.warn(msg);
 }
 
 const success = (msg) => {
-    swal(msg, "success");
+    toast.success(msg)
 }
 
 const error = (msg) => {
-    swal(msg, "error");
+    toast.error(msg)
 }
 
 const info = (msg) => {
-    swal(msg, "info");
+    toast.info(msg);
+    // swal(msg, "info");
 }
 
 const messenger = {
